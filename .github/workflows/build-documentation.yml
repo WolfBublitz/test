@@ -1,0 +1,36 @@
+name: Build Documentation
+
+on:
+  workflow_call:
+    inputs:
+      dotnet-version:
+        required: true
+        type: string
+
+jobs:
+  BuildNugetPackage:
+    name: Build Nuget Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: "Add NuGet Source"
+        run: dotnet nuget add source "https://nuget.pkg.github.com/WolfBublitz/index.json" --username WolfBublitz --password ${GITHUB_TOKEN} --store-password-in-clear-text --name github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Installing DocFX"
+        run: dotnet tool update -g docfx
+      - name: "Build Documentation"
+        run: docfx doc/docfx.json
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: 'doc/_site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
