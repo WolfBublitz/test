@@ -42,7 +42,7 @@ jobs:
       - name: "Installing DocFX"
         run: dotnet tool update -g docfx
       - name: "Build Documentation"
-        run: docfx doc/docfx.json -o doc/_site/1.0.0
+        run: docfx doc/docfx.json -o doc/_site/2.0.0
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
