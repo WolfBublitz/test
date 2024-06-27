@@ -19,6 +19,10 @@ jobs:
       configuration: Release
 
   BuildDocumentation:
+    on:
+      push:
+        tags:
+          - "*"
     name: Build Documenation
     uses: ./.github/workflows/build-documentation.yml
     with:
