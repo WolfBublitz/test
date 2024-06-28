@@ -34,7 +34,6 @@ jobs:
       - name: "Build Documentation"
         run: |
           docfx doc/docfx.json -o doc/_site/latest
-          mkdir -p doc/_site/${{ github.event.release.tag_name }}
           cp -r doc/_site/latest doc/_site/${{ github.event.release.tag_name }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
