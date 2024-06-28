@@ -13,13 +13,11 @@ permissions:
   pages: write
   id-token: write
 
+
 jobs:
   BuildDocumentation:
     name: Build Documentation
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -42,6 +40,13 @@ jobs:
         with:
           # Upload entire repository
           path: doc/_site
+  DeployToGitHubPages:
+    runs-on: ubuntu-latest
+    needs: BuildDocumentation
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    - steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
